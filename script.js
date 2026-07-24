@@ -18,7 +18,7 @@
    ============================================================================ */
 const CATEGORIES = [
   "Sistema", "Selos", "Cartório/Documentos", "Rede/Infraestrutura",
-  "Banco de Dados", "Imobiliário", "Protesto", "Parametros"
+  "Banco de Dados", "Imobiliário", "Protesto", "Parametros", "Linux"
 ];
 
 const SEED_TOPICS = [
@@ -179,7 +179,7 @@ const SEED_TOPICS = [
     }}
   },
   {
-    id: "seed-15", category: "Banco de Dados",
+    id: "seed-15", category: "Linux",
     title: "Verificar Firebird",
     summary: "Acessar via PuTTY e identificar a versão pelo arquivo security4.fdb.",
     content: { type:"steps", items:[
