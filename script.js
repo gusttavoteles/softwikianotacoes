@@ -130,7 +130,7 @@ const SEED_TOPICS = [
     id: "seed-11", category: "Rede/Infraestrutura",
     title: "Senha para conectar na rede",
     summary: "Credenciais padrão para cartórios provimentados.",
-    content: { type:"text", body: "Usuário: <span class=\"mono\">----</span> &nbsp;·&nbsp; Servidor: <span class=\"mono\">----</span>" },
+    content: { type:"text", body: "Usuário: <span class=\"mono\">-----</span> &nbsp;·&nbsp; Servidor: <span class=\"mono\">-----</span>" },
     note: "Credencial de uso interno da equipe técnica — não compartilhar fora do time.",
     tags: ["credenciais", "login", "provimentado"]
   },
