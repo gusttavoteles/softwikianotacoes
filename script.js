@@ -127,15 +127,7 @@ const SEED_TOPICS = [
     content: { type:"text", body: "Corrija no banco de dados a tabela a_termo_obito, ajustando o número atual da sequência." }
   },
   {
-    id: "seed-11", category: "Rede/Infraestrutura",
-    title: "Senha para conectar na rede",
-    summary: "Credenciais padrão para cartórios provimentados.",
-    content: { type:"text", body: "Usuário: <span class=\"mono\">VERIFICAR COM O DEPARTAMENTO RESPONSAVEL</span> &nbsp;·&nbsp; Servidor: <span class=\"mono\">VERIFICAR COM O DEPARTAMENTO RESPONSAVEL</span>" },
-    note: "Credencial de uso interno da equipe técnica — não compartilhar fora do time.",
-    tags: ["credenciais", "login", "provimentado"]
-  },
-  {
-    id: "seed-12", category: "Imobiliário",
+    id: "seed-11", category: "Imobiliário",
     title: "Erro DOI — tipo de operação imobiliária",
     summary: "Conferir o número no site, formatar o JSON e corrigir o ato.",
     content: { type:"steps", items:[
@@ -146,13 +138,13 @@ const SEED_TOPICS = [
     ]}
   },
   {
-    id: "seed-13", category: "Linux",
+    id: "seed-12", category: "Rede/Infraestrutura",
     title: "Verificar funcionamento do servidor",
     summary: "Testar a resposta do servidor continuamente com ping.",
     content: { type:"text", body: "Execute <span class=\"mono\">ping (endereço) -t</span> para monitorar a resposta do servidor continuamente." }
   },
   {
-    id: "seed-14", category: "Protesto",
+    id: "seed-13", category: "Protesto",
     title: "Anotações de Protesto — fluxo completo",
     summary: "Do apontamento à intimação, e as diferenças entre liquidação, desistência e cancelamento.",
     content: { type:"sections", sections: [
@@ -179,7 +171,7 @@ const SEED_TOPICS = [
     }}
   },
   {
-    id: "seed-15", category: "Linux",
+    id: "seed-14", category: "Linux",
     title: "Verificar Firebird",
     summary: "Acessar via PuTTY e identificar a versão pelo arquivo security4.fdb.",
     content: { type:"steps", items:[
@@ -189,7 +181,7 @@ const SEED_TOPICS = [
     ]}
   },
   {
-    id: "seed-16", category: "Parametros",
+    id: "seed-15", category: "Parametros",
     title: "Caixa não mostra os selos do sistema",
     summary: "Vincular o número do sistema na tela Cartório.",
     content: { type:"steps", items:[
