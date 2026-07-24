@@ -18,7 +18,7 @@
    ============================================================================ */
 const CATEGORIES = [
   "Sistema", "Selos", "Cartório/Documentos", "Rede/Infraestrutura",
-  "Banco de Dados", "Imobiliário", "Protesto"
+  "Banco de Dados", "Imobiliário", "Protesto", "Parametros"
 ];
 
 const SEED_TOPICS = [
@@ -62,7 +62,7 @@ const SEED_TOPICS = [
     title: "Instalar aplicativos na máquina local",
     summary: "Preparar uma máquina nova com o Softwiki, DLLs e Pegasus.",
     content: { type:"steps", items:[
-      "Entre no servidor e copie o endereço IP.",
+      "Entre no servidor e copie o endereço IP. (Se provimentado://172.16.1.100)",
       "Na máquina do cliente, abra esse endereço IP pela rede, copie a pasta do sistema local e renomeie a cópia para \"Softwiki\".",
       "Copie as DLLs e o instalador do Pegasus para a máquina do cliente e instale o Pegasus.",
       "Copie as DLLs para as pastas SysWOW64 e System32.",
@@ -79,8 +79,12 @@ const SEED_TOPICS = [
       "Acesse o site do SEE e faça login na conta do usuário.",
       "Busque pelos selos e baixe todos para a máquina.",
       "No sistema Caixa, vá em Importar e importe os selos baixados.",
-      "Vá em Manutenção de Lotes → Lotes Importados e redimensione os selos."
-    ]}
+      "Vá em Manutenção de Lotes → Lotes Importados e redimensione os selos.",
+      "Verifique se não consta nenhum selo já enviado no lote.",
+      "Se caso não for esse erro, pode ser que tenha pulado sequencia no lote do selo: Duplicar o ultimo selo enviado no selo vazio e enviar. Depois inutilizar o selo gerado"
+    ]},
+    note: "Isso ocorre quando o sistema não importa o lote de selos e ele fica zerado no site do SEE. Caso"
+    
   },
   {
     id: "seed-06", category: "Selos",
