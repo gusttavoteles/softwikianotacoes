@@ -189,7 +189,7 @@ const SEED_TOPICS = [
     ]}
   },
   {
-    id: "seed-16", category: "Selos",
+    id: "seed-16", category: "Parametros",
     title: "Caixa não mostra os selos do sistema",
     summary: "Vincular o número do sistema na tela Cartório.",
     content: { type:"steps", items:[
