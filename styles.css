@@ -1,0 +1,409 @@
+/* ============================================================================
+   SOFTWIKI — MANUAL DO CARTÓRIO
+   styles.css
+   ----------------------------------------------------------------------------
+   Organização deste arquivo:
+   1. Tokens de design (cores, fontes, sombras)
+   2. Base / reset
+   3. Cabeçalho (logo + título) — fixo no topo, com sombra ao rolar
+   4. Busca e filtros
+   5. Grade de cartões + animação de entrada
+   6. Modais (leitura de tópico e formulário) — com transição suave
+   7. Botão "voltar ao topo"
+   8. Acessibilidade (prefers-reduced-motion) e responsivo
+   ============================================================================ */
+
+/* ---------- 1. TOKENS DE DESIGN ---------- */
+:root{
+  --ink:        #161b22;   /* fundo geral — tinta escura */
+  --ink-2:      #1f2733;   /* painéis / cabeçalho */
+  --ink-3:      #2a3444;   /* bordas sobre fundo escuro */
+  --logo-blue:  #1c5a7d;   /* azul extraído da logo Softwiki, usado no cabeçalho */
+  --paper:      #f4efe4;   /* cartões — papel */
+  --paper-2:    #eae1cd;   /* superfícies internas do cartão */
+  --paper-line: #ddd2b8;   /* linhas/divisores sobre papel */
+  --carimbo:    #a23b3b;   /* vermelho de carimbo — acento principal */
+  --carimbo-dk: #7e2c2c;
+  --selo:       #2e6b5e;   /* verde-selo — acento secundário */
+  --gold:       #b8934a;   /* aro do selo / detalhes */
+  --text-ink:   #2a2620;   /* texto escuro sobre papel */
+  --muted:      #7c7566;   /* texto secundário sobre papel */
+  --paper-soft: #fbf8f2;
+
+  --font-display: 'Roboto Slab', serif;
+  --font-body:    'IBM Plex Sans', sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+
+  --radius: 3px;
+  --shadow-card: 0 1px 0 rgba(0,0,0,.04), 0 8px 20px -10px rgba(0,0,0,.45);
+  --ease: cubic-bezier(.22,.9,.32,1);
+}
+
+/* ---------- 2. BASE / RESET ---------- */
+*{ box-sizing: border-box; }
+
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 500px at 15% -10%, #1c2431 0%, transparent 60%),
+    var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ---------- 3. CABEÇALHO ---------- */
+header.top{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding: 28px 24px 26px;
+  text-align:center;
+  background: linear-gradient(180deg, var(--logo-blue) 0%, #163d55 55%, var(--ink) 100%);
+  border-bottom: 1px solid var(--ink-3);
+  transition: box-shadow .3s var(--ease), padding .3s var(--ease);
+}
+/* Aplicada via JS quando a página é rolada, para dar profundidade ao cabeçalho fixo */
+header.top.scrolled{
+  padding: 14px 24px;
+  box-shadow: 0 16px 34px -18px rgba(0,0,0,.75);
+}
+
+.logo-img{
+  display:block;
+  margin: 0 auto;
+  width: min(230px, 55vw);
+  height:auto;
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,.4));
+  transition: width .3s var(--ease);
+}
+header.top.scrolled .logo-img{ width: min(150px, 40vw); }
+
+.title-block p{
+  margin: 10px 0 0;
+  color:#cfe1ec;
+  font-size:13.5px;
+  font-family: var(--font-mono);
+  letter-spacing:.2px;
+  transition: opacity .25s var(--ease), max-height .25s var(--ease), margin .25s var(--ease);
+  max-height:40px;
+  opacity:1;
+  overflow:hidden;
+}
+header.top.scrolled .title-block p{
+  max-height:0;
+  opacity:0;
+  margin:0;
+}
+
+/* ---------- 4. BUSCA E FILTROS ---------- */
+.search-wrap{
+  max-width: 880px;
+  margin: 28px auto 0;
+  padding: 0 24px;
+}
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background: var(--paper);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--paper-line);
+  position:relative;
+  transition: box-shadow .2s var(--ease), transform .2s var(--ease);
+}
+.search-box:focus-within{
+  box-shadow: 0 0 0 3px rgba(162,59,59,.25), var(--shadow-card);
+  transform: translateY(-1px);
+}
+.search-box svg{ flex:0 0 auto; color: var(--carimbo); transition: transform .2s var(--ease); }
+.search-box:focus-within svg{ transform: scale(1.12) rotate(-8deg); }
+.search-box input{
+  flex:1;
+  border:none; outline:none; background:transparent;
+  font-family: var(--font-body);
+  font-size:16px;
+  color: var(--text-ink);
+}
+.search-box input::placeholder{ color: var(--muted); }
+.search-hint{
+  font-family: var(--font-mono);
+  font-size:12px;
+  color:#7c8798;
+  margin: 8px 4px 0;
+}
+
+.filters{
+  max-width: 880px;
+  margin: 16px auto 0;
+  padding: 0 24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.chip{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--ink-3);
+  background: var(--ink-2);
+  color:#c7cedb;
+  cursor:pointer;
+  transition: all .18s var(--ease);
+  user-select:none;
+}
+.chip:hover{ border-color: var(--gold); transform: translateY(-1px); }
+.chip:active{ transform: translateY(0) scale(.96); }
+.chip.active{
+  background: var(--carimbo);
+  border-color: var(--carimbo);
+  color: #fdf3ef;
+}
+
+.toolbar{
+  max-width: 1120px;
+  margin: 22px auto 0;
+  padding: 0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.result-count{ font-size:13px; color:#8b95a5; font-family: var(--font-mono); }
+.btn{
+  font-family: var(--font-body);
+  font-weight:600;
+  font-size:14px;
+  padding:10px 18px;
+  border-radius: var(--radius);
+  border:1px solid transparent;
+  cursor:pointer;
+  transition: transform .12s var(--ease), filter .15s ease, box-shadow .2s ease;
+}
+.btn:hover{ box-shadow: 0 6px 16px -6px rgba(0,0,0,.5); }
+.btn:active{ transform: translateY(1px) scale(.98); }
+.btn-primary{ background: var(--carimbo); color:#fdf3ef; }
+.btn-primary:hover{ filter:brightness(1.08); }
+.btn-ghost{ background:transparent; border-color: var(--ink-3); color:#c7cedb; }
+.btn-ghost:hover{ border-color:var(--gold); }
+
+/* ---------- 5. GRADE DE CARTÕES ---------- */
+.grid{
+  max-width:1120px;
+  margin: 18px auto 60px;
+  padding: 0 24px;
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+  gap:20px;
+}
+
+/* Animação de entrada escalonada: cada card recebe um animation-delay via JS
+   (variável --d), criando um efeito de "cartões sendo colocados na mesa". */
+@keyframes cardIn{
+  from{ opacity:0; transform: translateY(16px) scale(.98); }
+  to{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+.card{
+  position:relative;
+  background: var(--paper);
+  color: var(--text-ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 22px 20px 18px;
+  cursor:pointer;
+  border-top: 3px solid var(--carimbo);
+  background-image: repeating-linear-gradient(90deg, var(--paper-line) 0 8px, transparent 8px 16px);
+  background-repeat:no-repeat;
+  background-size: 100% 1px;
+  background-position: top left;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+  display:flex;
+  flex-direction:column;
+  min-height: 190px;
+  animation: cardIn .5s var(--ease) both;
+  animation-delay: var(--d, 0ms);
+}
+.card:hover{ transform: translateY(-5px) scale(1.012); box-shadow: 0 18px 34px -14px rgba(0,0,0,.6); }
+.card[data-source="custom"]{ border-top-color: var(--selo); }
+
+.card-top{
+  display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+}
+.card-proto{
+  font-family: var(--font-mono);
+  font-size:11px;
+  color: var(--muted);
+  letter-spacing:.5px;
+}
+.card-tag{
+  font-family: var(--font-mono);
+  font-size:10.5px;
+  padding:3px 9px;
+  border-radius:999px;
+  border:1px solid var(--carimbo);
+  color: var(--carimbo);
+  white-space:nowrap;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.card[data-source="custom"] .card-tag{ border-color: var(--selo); color: var(--selo); }
+
+.card h3{
+  font-family: var(--font-display);
+  font-size:18px;
+  margin:14px 0 8px;
+  line-height:1.25;
+}
+.card p.summary{
+  font-size:13.5px;
+  color:#4b463c;
+  margin:0;
+  flex:1;
+}
+.card .card-bottom{
+  margin-top:14px;
+  font-size:12px;
+  color: var(--carimbo);
+  font-weight:600;
+  display:flex; align-items:center; gap:6px;
+  transition: gap .18s var(--ease);
+}
+.card:hover .card-bottom{ gap:10px; }
+
+.empty-state{
+  grid-column: 1/-1;
+  text-align:center;
+  padding: 60px 20px;
+  color:#8b95a5;
+  animation: cardIn .4s var(--ease) both;
+}
+.empty-state strong{ color:#dbe1ea; display:block; margin-bottom:6px; font-family:var(--font-display); font-size:18px;}
+
+/* ---------- 6. MODAIS ---------- */
+.overlay{
+  position:fixed; inset:0;
+  background: rgba(10,13,18,.72);
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding: 5vh 16px;
+  overflow-y:auto;
+  z-index:50;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition: opacity .25s var(--ease), visibility .25s;
+}
+.overlay.show{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.modal{
+  background: var(--paper-soft);
+  color: var(--text-ink);
+  max-width: 640px;
+  width:100%;
+  border-radius: var(--radius);
+  padding: 30px 30px 26px;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.6);
+  border-top: 4px solid var(--carimbo);
+  position:relative;
+  transform: translateY(14px) scale(.97);
+  opacity:0;
+  transition: transform .3s var(--ease), opacity .3s var(--ease);
+}
+.overlay.show .modal{
+  transform: translateY(0) scale(1);
+  opacity:1;
+}
+
+.modal-close{
+  position:absolute; top:16px; right:16px;
+  background:none; border:none; cursor:pointer;
+  font-size:20px; color:var(--muted); line-height:1;
+  padding:4px;
+  transition: transform .15s var(--ease), color .15s ease;
+}
+.modal-close:hover{ color: var(--carimbo); transform: rotate(90deg); }
+
+.modal-proto{ font-family: var(--font-mono); font-size:12px; color:var(--muted); }
+.modal h2{ font-family: var(--font-display); font-size:24px; margin:6px 0 4px; }
+.modal .modal-tag{
+  display:inline-block; margin-bottom:16px;
+  font-family: var(--font-mono); font-size:11px; text-transform:uppercase;
+  color: var(--carimbo); border:1px solid var(--carimbo); border-radius:999px; padding:3px 10px;
+}
+.modal-body{ font-size:14.5px; line-height:1.65; }
+.modal-body ol, .modal-body ul{ padding-left:20px; }
+.modal-body li{ margin-bottom:8px; }
+.modal-body h4{ font-family:var(--font-display); font-size:15px; margin:18px 0 6px; }
+.modal-body code, .modal-body .mono{ font-family: var(--font-mono); background:var(--paper-2); padding:1px 5px; border-radius:3px; }
+.modal-note{
+  margin-top:16px; padding:12px 14px; background: var(--paper-2);
+  border-left:3px solid var(--gold); font-size:13.5px; border-radius: 0 var(--radius) var(--radius) 0;
+}
+.modal-table{ width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
+.modal-table th, .modal-table td{ border:1px solid var(--paper-line); padding:6px 8px; text-align:left; }
+.modal-table th{ background:var(--paper-2); font-family:var(--font-display); font-weight:500; }
+
+.modal-actions{ margin-top:22px; display:flex; gap:10px; justify-content:flex-end; }
+
+/* ---------- Formulário (adicionar novo tópico) ---------- */
+.field{ margin-bottom:14px; }
+.field label{ display:block; font-size:12.5px; font-weight:600; margin-bottom:5px; color:#4b463c; }
+.field input, .field select, .field textarea{
+  width:100%; font-family: var(--font-body); font-size:14px;
+  padding:10px 12px; border-radius: var(--radius);
+  border:1px solid var(--paper-line); background: var(--paper-soft); color: var(--text-ink);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none;
+  border-color: var(--carimbo);
+  box-shadow: 0 0 0 3px rgba(162,59,59,.15);
+}
+.field textarea{ min-height:110px; resize:vertical; font-family: var(--font-mono); font-size:13px; }
+.field-hint{ font-size:11.5px; color:var(--muted); margin-top:4px; }
+
+footer.credit{
+  text-align:center; padding: 10px 20px 90px;
+  font-family: var(--font-mono); font-size:11.5px; color:#5c6779;
+}
+
+/* ---------- 7. BOTÃO "VOLTAR AO TOPO" ---------- */
+.back-top{
+  position:fixed;
+  right:24px; bottom:24px;
+  width:46px; height:46px;
+  border-radius:50%;
+  background: var(--carimbo);
+  color:#fdf3ef;
+  border:none;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 10px 24px -8px rgba(0,0,0,.6);
+  opacity:0;
+  transform: translateY(10px);
+  pointer-events:none;
+  transition: opacity .25s var(--ease), transform .25s var(--ease), filter .15s ease;
+  z-index: 45;
+}
+.back-top.show{ opacity:1; transform: translateY(0); pointer-events:auto; }
+.back-top:hover{ filter:brightness(1.1); }
+
+/* ---------- 8. ACESSIBILIDADE E RESPONSIVO ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+@media (max-width:520px){
+  .modal{ padding:24px 18px 20px; }
+}
