@@ -146,7 +146,7 @@ const SEED_TOPICS = [
     ]}
   },
   {
-    id: "seed-13", category: "Rede/Infraestrutura",
+    id: "seed-13", category: "Linux",
     title: "Verificar funcionamento do servidor",
     summary: "Testar a resposta do servidor continuamente com ping.",
     content: { type:"text", body: "Execute <span class=\"mono\">ping (endereço) -t</span> para monitorar a resposta do servidor continuamente." }
